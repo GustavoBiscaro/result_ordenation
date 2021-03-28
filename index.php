@@ -8,8 +8,8 @@ try {
 }
 ?>
 
-<form method="get">
-    <select name="ordem">
+<form method="GET">
+    <select name="ordem" onchange="this.form.submit()">
         <option></option>
         <option value="nome">Pelo nome</option>
         <option value="idade">Pela idade</option>
@@ -22,7 +22,13 @@ try {
         <th>Idade</th>
     </tr>
     <?php
-    $sql = "SELECT * FROM usuarios";
+    if(isset($_GET['ordem']) && !empty($_GET['ordem'])) {
+        $ordem = addslashes($_GET['ordem']);
+        $sql = "SELECT * FROM usuarios ORDER BY ".$ordem;
+    } else {
+        $sql = "SELECT * FROM usuarios";
+    }
+    $sql = "SELECT * FROM usuarios ORDER BY idade ";
     $sql = $pdo->query($sql);
     if($sql->rowCount() > 0) {
 
